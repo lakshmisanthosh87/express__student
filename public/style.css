@@ -1,0 +1,35 @@
+body {
+  font-family: Arial;
+  padding: 20px;
+}
+
+form input {
+  display: block;
+  margin: 6px 0;
+  padding: 8px;
+}
+
+button {
+  padding: 8px 12px;
+  margin-top: 10px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+button.edit {
+  background: gold;
+}
+
+button.delete {
+  background: red;
+  color: white;
+}
