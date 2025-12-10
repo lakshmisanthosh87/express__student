@@ -1,35 +1,130 @@
+/* General layout */
 body {
-  font-family: Arial;
-  padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f8;
+    margin: 0;
+    padding: 0;
 }
 
-form input {
-  display: block;
-  margin: 6px 0;
-  padding: 8px;
+.container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
 }
 
-button {
-  padding: 8px 12px;
-  margin-top: 10px;
+/* Headings */
+h1, h2 {
+    text-align: center;
+    color: #333;
 }
 
+/* Form styling */
+.student-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.student-form input {
+    flex: 1 1 200px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.student-form .buttons {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+}
+
+.student-form button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.student-form button:hover {
+    background-color: #0056b3;
+}
+
+#updateBtn {
+    display: none;
+    background-color: #28a745;
+}
+
+#updateBtn:hover {
+    background-color: #1e7e34;
+}
+
+/* Table styling */
 table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
 }
 
-th, td {
-  padding: 10px;
-  border: 1px solid #ddd;
+thead {
+    background-color: #007bff;
+    color: white;
 }
 
-button.edit {
-  background: gold;
+thead th {
+    padding: 12px;
+    text-align: left;
 }
 
-button.delete {
-  background: red;
-  color: white;
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tbody td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Action buttons in table */
+table button {
+    padding: 5px 10px;
+    margin-right: 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #fff;
+    transition: 0.2s;
+}
+
+table button:nth-child(1) { /* Edit */
+    background-color: #ffc107;
+}
+
+table button:nth-child(1):hover {
+    background-color: #e0a800;
+}
+
+table button:nth-child(2) { /* Delete */
+    background-color: #dc3545;
+}
+
+table button:nth-child(2):hover {
+    background-color: #c82333;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .student-form {
+        flex-direction: column;
+    }
+    .student-form input {
+        width: 100%;
+    }
 }

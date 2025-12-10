@@ -1,7 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-import path from "path";
-import { fileURLToPath } from "url";
+import cors from "cors";
 import connectDB from "./config/db.js";
 import studentRoutes from "./routes/studentRoutes.js";
 import errorHandler from "./utils/errorHandler.js";
@@ -10,25 +9,22 @@ dotenv.config();
 
 const app = express();
 
-// Resolve directory (ES modules way)
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Middlewares
+// Middleware
+app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static("public"));
+
+// Database connection
+connectDB();
 
 // Routes
 app.use("/api/students", studentRoutes);
 
-// Global error handler
+// Error handler
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 4000;
-
-// Start
-connectDB().then(() => {
-  app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
-  });
-});
+// Server start
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () =>
+    console.log(`Server running on http://localhost:${PORT}`)
+);

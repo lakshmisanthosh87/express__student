@@ -1,40 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Student Management</title>
-  <link rel="stylesheet" href="styles.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student CRUD</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <h1>Student Management</h1>
+<div class="container">
+    <h1>Student Management</h1>
 
-  <form id="studentForm">
-    <input type="hidden" id="studentId">
+    <form id="studentForm" class="student-form">
+        <input type="hidden" id="studentId">
+        <input type="text" id="name" placeholder="Name" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="text" id="roll" placeholder="Roll Number" required>
+        <input type="number" id="s1" placeholder="Subject 1 Marks">
+        <input type="number" id="s2" placeholder="Subject 2 Marks">
+        <input type="number" id="s3" placeholder="Subject 3 Marks">
+        <div class="buttons">
+            <button type="submit" id="submitBtn">Add Student</button>
+            <button type="button" id="updateBtn">Update Student</button>
+        </div>
+    </form>
 
-    <input type="text" id="name" placeholder="Name" required />
-    <input type="email" id="email" placeholder="Email" required />
-    <input type="text" id="rollNumber" placeholder="Roll Number" required />
+    <h2>Student List</h2>
+    <table id="studentTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Roll Number</th>
+                <th>Email</th>
+                <th>Marks</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="studentList"></tbody>
+    </table>
+</div>
 
-    <input type="number" id="subject1" placeholder="Subject 1" />
-    <input type="number" id="subject2" placeholder="Subject 2" />
-    <input type="number" id="subject3" placeholder="Subject 3" />
-
-    <button type="submit">Save</button>
-  </form>
-
-  <table id="studentsTable">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Roll</th>
-        <th>Marks</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody id="studentsBody"></tbody>
-  </table>
-
-  <script src="app.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
