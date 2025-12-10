@@ -1,5 +1,16 @@
 const API = "/api/students";
 
+const studentId = document.getElementById("studentId");
+const name = document.getElementById("name");
+const email = document.getElementById("email");
+const roll = document.getElementById("roll");
+const s1 = document.getElementById("s1");
+const s2 = document.getElementById("s2");
+const s3 = document.getElementById("s3");
+const submitBtn = document.getElementById("submitBtn");
+const updateBtn = document.getElementById("updateBtn");
+const studentForm = document.getElementById("studentForm");
+
 // Load students
 async function loadStudents() {
     const res = await fetch(API);
@@ -11,7 +22,7 @@ async function loadStudents() {
     data.forEach(std => {
         const tr = document.createElement("tr");
         tr.innerHTML = `
-            <td>${std.name}</td>
+            <td>${std.name}</td> 
             <td>${std.rollNumber}</td>
             <td>${std.email}</td>
             <td>${std.marks.subject1}, ${std.marks.subject2}, ${std.marks.subject3}</td>
@@ -82,18 +93,19 @@ async function editStudent(id) {
     updateBtn.style.display = "inline-block";
 }
 
+
 // Update student
 updateBtn.addEventListener("click", async () => {
     const id = studentId.value;
 
     const updatedStudent = {
-        name: name.value,
-        email: email.value,
-        rollNumber: roll.value,
+        name: name.value.trim(),
+        email: email.value.trim(),
+        rollNumber: roll.value.trim(),
         marks: {
-            subject1: Number(s1.value),
-            subject2: Number(s2.value),
-            subject3: Number(s3.value)
+            subject1: Number(s1.value) || 0,
+            subject2: Number(s2.value) || 0,
+            subject3: Number(s3.value) || 0
         }
     };
 
