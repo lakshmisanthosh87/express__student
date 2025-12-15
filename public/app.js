@@ -1,125 +1,119 @@
-const API = "/api/students";
+if (!localStorage.getItem("token")) {
+  window.location.href = "login.html";
+}
+function logout() {
+  localStorage.removeItem("token");
+  window.location.href = "login.html";
+}
+const API_URL = "/api/students";
+let editingId = null;
 
-const studentId = document.getElementById("studentId");
-const name = document.getElementById("name");
-const email = document.getElementById("email");
-const roll = document.getElementById("roll");
-const s1 = document.getElementById("s1");
-const s2 = document.getElementById("s2");
-const s3 = document.getElementById("s3");
-const submitBtn = document.getElementById("submitBtn");
-const updateBtn = document.getElementById("updateBtn");
-const studentForm = document.getElementById("studentForm");
+const form = document.getElementById("studentForm");
+const tableBody = document.querySelector("#studentsTable tbody");
 
-// Load students
-async function loadStudents() {
-    const res = await fetch(API);
-    const data = await res.json();
+const nameInput = document.getElementById("name");
+const emailInput = document.getElementById("email");
+const rollInput = document.getElementById("rollNumber");
+const mathsInput = document.getElementById("maths");
+const cheInput = document.getElementById("che");
+const phyInput = document.getElementById("phy");
 
-    const list = document.getElementById("studentList");
-    list.innerHTML = "";
+//load to table
+function loadStudents() {
+  fetch(API_URL)
+    .then(res => res.json())
+    .then(data => {
+      tableBody.innerHTML = "";
 
-    data.forEach(std => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-            <td>${std.name}</td> 
-            <td>${std.rollNumber}</td>
-            <td>${std.email}</td>
-            <td>${std.marks.subject1}, ${std.marks.subject2}, ${std.marks.subject3}</td>
+      data.forEach((s) => {
+        tableBody.innerHTML += `
+        <tr>
+            <td>${s.name}</td>
+            <td>${s.email}</td>
+            <td>${s.rollNumber}</td>
             <td>
-                <button onclick="editStudent('${std._id}')">Edit</button>
-                <button onclick="deleteStudent('${std._id}')">Delete</button>
+                Maths: ${s.marks?.maths ?? ""}, 
+                Chemistry: ${s.marks?.che ?? ""}, 
+                Physics: ${s.marks?.phy ?? ""}
             </td>
+            <td>
+                <button onclick="editStudent('${s._id}')">Edit</button>
+                <button onclick="deleteStudent('${s._id}')">Delete</button>
+            </td>
+        </tr>
         `;
-        list.appendChild(tr);
+      });
     });
 }
 
 
-// Add student
-document.getElementById("studentForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
+//add/update
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
 
-    // Grab input values
-    const student = {
-        name: document.getElementById("name").value.trim(),
-        email: document.getElementById("email").value.trim(),
-        rollNumber: document.getElementById("roll").value.trim(),
-        marks: {
-            subject1: Number(document.getElementById("s1").value) || 0,
-            subject2: Number(document.getElementById("s2").value) || 0,
-            subject3: Number(document.getElementById("s3").value) || 0
-        }
-    };
-
-    // Send POST request
-    const res = await fetch("/api/students", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(student)
-    });
-
-    if (res.status === 400) {
-        alert("Name, Email, and Roll Number are required!");
-        return;
+  const data = {
+    name: nameInput.value,
+    email: emailInput.value,
+    rollNumber: rollInput.value,
+    marks: {
+      maths: Number(mathsInput.value),
+      che: Number(cheInput.value),
+      phy: Number(phyInput.value)
     }
+  };
 
-    // Reload list and reset form
-    loadStudents();
-    document.getElementById("studentForm").reset();
+  if (editingId) {
+    fetch(`${API_URL}/${editingId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    })
+      .then(() => {
+        editingId = null;
+        form.reset();
+        loadStudents();
+      });
+
+  } else {
+    fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    })
+      .then(() => {
+        form.reset();
+        loadStudents();
+      });
+  }
 });
 
-// Delete student
-async function deleteStudent(id) {
-    await fetch(`${API}/${id}`, { method: "DELETE" });
-    loadStudents();
-}
 
-// Edit student → populate form
-async function editStudent(id) {
-    const res = await fetch(API);
-    const students = await res.json();
-    const std = students.find(s => s._id === id);
+//edit
+function editStudent(id) {
+  fetch(API_URL)
+    .then(res => res.json())
+    .then(students => {
+      const student = students.find(s => s._id === id);
 
-    studentId.value = std._id;
-    name.value = std.name;
-    email.value = std.email;
-    roll.value = std.rollNumber;
-    s1.value = std.marks.subject1;
-    s2.value = std.marks.subject2;
-    s3.value = std.marks.subject3;
+      if (student) {
+        nameInput.value = student.name;
+        emailInput.value = student.email;
+        rollInput.value = student.rollNumber;
 
-    submitBtn.style.display = "none";
-    updateBtn.style.display = "inline-block";
-}
+        mathsInput.value = student.marks?.maths ?? "";
+        cheInput.value = student.marks?.che ?? "";
+        phyInput.value = student.marks?.phy ?? "";
 
-
-// Update student
-updateBtn.addEventListener("click", async () => {
-    const id = studentId.value;
-
-    const updatedStudent = {
-        name: name.value.trim(),
-        email: email.value.trim(),
-        rollNumber: roll.value.trim(),
-        marks: {
-            subject1: Number(s1.value) || 0,
-            subject2: Number(s2.value) || 0,
-            subject3: Number(s3.value) || 0
-        }
-    };
-
-    await fetch(`${API}/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedStudent)
+        editingId = id;
+      }
     });
+}
 
-    loadStudents();
-    studentForm.reset();
-    submitBtn.style.display = "inline-block";
-    updateBtn.style.display = "none";
-});
 
-// Initial load
+//delete
+function deleteStudent(id) {
+  fetch(`${API_URL}/${id}`, { method: "DELETE" })
+    .then(() => loadStudents());
+}
+
 loadStudents();

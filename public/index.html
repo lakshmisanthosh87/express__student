@@ -1,45 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Student CRUD</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Management System</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
+
 <body>
+  <div class="container">
+    <div class="welcome-section">
+      <div class="welcome-content">
+        <h1><i class="fas fa-graduation-cap"></i> Student Management System</h1>
+        <p class="welcome-subtitle">Welcome to your comprehensive student management platform</p>
+        <p class="welcome-description">Manage student records, track academic performance, and streamline administrative
+          tasks with our user-friendly interface.</p>
 
-<div class="container">
-    <h1>Student Management</h1>
-
-    <form id="studentForm" class="student-form">
-        <input type="hidden" id="studentId">
-        <input type="text" id="name" placeholder="Name" required>
-        <input type="email" id="email" placeholder="Email" required>
-        <input type="text" id="roll" placeholder="Roll Number" required>
-        <input type="number" id="s1" placeholder="Subject 1 Marks">
-        <input type="number" id="s2" placeholder="Subject 2 Marks">
-        <input type="number" id="s3" placeholder="Subject 3 Marks">
-        <div class="buttons">
-            <button type="submit" id="submitBtn">Add Student</button>
-            <button type="button" id="updateBtn">Update Student</button>
+        <div class="action-buttons">
+          <a href="login.html" class="btn btn-primary">
+            <i class="fas fa-sign-in-alt"></i> Login
+          </a>
+          <a href="register.html" class="btn btn-secondary">
+            <i class="fas fa-user-plus"></i> Register
+          </a>
         </div>
-    </form>
 
-    <h2>Student List</h2>
-    <table id="studentTable">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Roll Number</th>
-                <th>Email</th>
-                <th>Marks</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody id="studentList"></tbody>
-    </table>
-</div>
-
-<script src="app.js"></script>
+        <div class="features">
+          <div class="feature-item">
+            <i class="fas fa-users"></i>
+            <span>Student Records</span>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-chart-bar"></i>
+            <span>Performance Tracking</span>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-shield-alt"></i>
+            <span>Secure Access</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
+
 </html>
