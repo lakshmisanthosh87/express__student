@@ -11,17 +11,22 @@
 
 <body>
     <div class="container">
-        <header class="header glass">
-            <div class="header-text">
-                <h1><i class="fas fa-graduation-cap"></i> Student Management System</h1>
-                <p class="subtitle">Manage student records and academic performance</p>
-            </div>
+        <header class="header">
+            <h1><i class="fas fa-graduation-cap"></i> Student Management System</h1>
+            <p class="subtitle">Manage student records and academic performance</p>
             <button onclick="logout()">Logout</button>
         </header>
 
         <main class="main-content">
             <section class="form-section">
-                <div class="form-container glass">
+                <div class="form-container">
+                    <div id="profileBox" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                        <img id="profileImg" width="80" height="80" style="border-radius: 50%; object-fit: cover; background: #eee;" alt="Profile Picture" src="https://ui-avatars.com/api/?name=User&background=aaa&color=fff" />
+                        <div>
+                            <h2 id="userName" style="margin: 0; font-size: 1.3rem;">Loading...</h2>
+                            <p id="userEmail" style="margin: 0; color: #666; font-size: 1rem;">Loading...</p>
+                        </div>
+                    </div>
                     <h2><i class="fas fa-plus-circle"></i> Add New Student</h2>
                     <form id="studentForm" class="student-form">
                         <div class="form-group">
@@ -83,7 +88,7 @@
             </section>
 
             <section class="table-section">
-                <div class="table-container glass">
+                <div class="table-container">
                     <div class="table-header">
                         <h2><i class="fas fa-users"></i> Student Records</h2>
                     </div>

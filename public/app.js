@@ -1,4 +1,4 @@
-if (!localStorage.getItem("token")) {
+if (!localStorage.getItem("token") || !localStorage.getItem("userId")) {
   window.location.href = "login.html";
 }
 function logout() {
@@ -20,9 +20,15 @@ const phyInput = document.getElementById("phy");
 
 //load to table
 function loadStudents() {
-  fetch(API_URL)
+  const token = localStorage.getItem("token");
+  fetch(API_URL, {
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  })
     .then(res => res.json())
     .then(data => {
+      console.log(data);
       tableBody.innerHTML = "";
 
       data.forEach((s) => {
@@ -47,7 +53,7 @@ function loadStudents() {
 }
 
 
-//add/update
+//update
 form.addEventListener("submit", (e) => {
   e.preventDefault();
 
@@ -63,9 +69,13 @@ form.addEventListener("submit", (e) => {
   };
 
   if (editingId) {
+    const token = localStorage.getItem("token");
     fetch(`${API_URL}/${editingId}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
       body: JSON.stringify(data)
     })
       .then(() => {
@@ -75,9 +85,13 @@ form.addEventListener("submit", (e) => {
       });
 
   } else {
+    const token = localStorage.getItem("token");
     fetch(API_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
       body: JSON.stringify(data)
     })
       .then(() => {
@@ -112,8 +126,50 @@ function editStudent(id) {
 
 //delete
 function deleteStudent(id) {
-  fetch(`${API_URL}/${id}`, { method: "DELETE" })
+  const token = localStorage.getItem("token");
+  fetch(`${API_URL}/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  })
     .then(() => loadStudents());
+}
+
+const userId = localStorage.getItem("userId");
+
+if (userId) {
+  const token = localStorage.getItem("token");
+  fetch(`/api/auth/profile/${userId}`, {
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  })
+    .then(res => {
+      if (!res.ok) throw new Error("User not found");
+      return res.json();
+    })
+    .then(user => {
+      // If user.image is available, use it.
+      // Otherwise, use UI Avatars with the first letter of the user's name (or U if missing)
+      const name = user.name || "User";
+      const firstLetter = name.trim().charAt(0).toUpperCase() || "U";
+      const avatarUrl = user.image
+        ? user.image
+        : `https://ui-avatars.com/api/?name=${encodeURIComponent(firstLetter)}&background=aaa&color=fff`;
+      document.getElementById("profileImg").src = avatarUrl;
+      document.getElementById("userName").innerText = name || "No Name";
+      document.getElementById("userEmail").innerText = user.email || "No Email";
+    })
+    .catch(() => {
+      document.getElementById("profileImg").src = "https://ui-avatars.com/api/?name=U&background=aaa&color=fff";
+      document.getElementById("userName").innerText = "Unknown User";
+      document.getElementById("userEmail").innerText = "";
+    });
+} else {
+  document.getElementById("profileImg").src = "https://ui-avatars.com/api/?name=U&background=aaa&color=fff";
+  document.getElementById("userName").innerText = "Unknown User";
+  document.getElementById("userEmail").innerText = "";
 }
 
 loadStudents();
