@@ -1,30 +1,28 @@
 import express from "express";
 import dotenv from "dotenv";
-import cors from "cors";
 import connectDB from "./config/db.js";
+import authRoutes from "./routes/authRoutes.js";
 import studentRoutes from "./routes/studentRoutes.js";
-import errorHandler from "./utils/errorHandler.js";
+import path from "path";
 
 dotenv.config();
+connectDB();
 
 const app = express();
 
-// Middleware
-app.use(cors());
-app.use(express.json());
+//  REQUIRED 
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ limit: "10mb", extended: true }));
+
+
+//  static files 
 app.use(express.static("public"));
 
-// Database connection
-connectDB();
-
-// Routes
+//  routes 
+app.use("/api/auth", authRoutes);
 app.use("/api/students", studentRoutes);
 
-// Error handler
-app.use(errorHandler);
-
-// Server start
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () =>
-    console.log(`Server running on http://localhost:${PORT}`)
-);
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => {
+  console.log(`server is running on http://localhost:${PORT}/`)
+});

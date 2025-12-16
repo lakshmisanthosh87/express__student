@@ -1,4 +1,5 @@
-export default (err, req, res, next) => {
-    const status = err.status || 500;
-    res.status(status).json({ message: err.message || "Server Error" });
+export const errorHandler = (err, req, res, next) => {
+  console.error("Error:", err.message);
+  res.status(500).json({ message: "Server Error" });
 };
+

@@ -1,14 +1,16 @@
 import mongoose from "mongoose";
 
+const marksSchema = new mongoose.Schema({
+  maths: Number,
+  che: Number,
+  phy: Number
+}, { _id: false });
+
 const studentSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    email: { type: String, required: true },
-    rollNumber: { type: String, required: true },
-    marks: {
-        subject1: { type: Number, default: 0 },
-        subject2: { type: Number, default: 0 },
-        subject3: { type: Number, default: 0 }
-    }
+  name: String,
+  email: String,
+  rollNumber: String,
+  marks: marksSchema
 });
 
 export default mongoose.model("Student", studentSchema);
