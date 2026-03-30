@@ -23,6 +23,11 @@ app.use("/api/auth", authRoutes);
 app.use("/api/students", studentRoutes);
 
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
-  console.log(`server is running on http://localhost:${PORT}/`)
-});
+
+if (process.env.NODE_ENV !== "production") {
+  app.listen(PORT, () => {
+    console.log(`server is running on http://localhost:${PORT}/`)
+  });
+}
+
+export default app;
