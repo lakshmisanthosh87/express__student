@@ -16,7 +16,8 @@ app.use(express.urlencoded({ limit: "10mb", extended: true }));
 
 
 //  static files 
-app.use(express.static("public"));
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, "public")));
 
 //  routes 
 app.use("/api/auth", authRoutes);
